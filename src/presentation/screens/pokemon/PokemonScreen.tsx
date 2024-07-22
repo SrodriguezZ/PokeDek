@@ -13,6 +13,9 @@ import { Image } from 'react-native'
 import { themeContext } from '../../context/ThemeContext'
 import { FadeInImage } from '../../components/ui/FadeImage'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { ButtonComponent } from '../../components/ButtonComponent'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import LottieView from 'lottie-react-native'
 
 
 interface Props extends StackScreenProps<PropsNavigator,'PokemonScreen'>{}
@@ -20,7 +23,7 @@ interface Props extends StackScreenProps<PropsNavigator,'PokemonScreen'>{}
 export const  PokemonScreen = ({navigation,route}:Props) => {
   const {top} = useSafeAreaInsets();
   const {pokemonId}= route.params;
-
+  const LottieImg = require('../../../assets/LottieJson/AnimationPokeball.json');
   //saber el thema
   const {isDark} = useContext(themeContext);
 
@@ -31,11 +34,27 @@ export const  PokemonScreen = ({navigation,route}:Props) => {
   })
 
   if(!pokemon){ // haciendo la negaicion que si no se tiene un pokemon si es false se pone en true ya que no tiene un pokemon 
+    // return (
+    //   <FullScreenLoader/>
+    // )
     return (
-      <FullScreenLoader/>
-    )
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'black',
+        }}>
+        <LottieView
+          source={LottieImg}
+          style={styles.lottieStyle}
+          autoPlay
+          loop
+        />
+      </View>
+    );
   }
-
+  const navigate = useNavigation<NavigationProp<PropsNavigator>>();
   const pokeballImg = isDark ? require('../../../assets/pokeball-dark.png') : require('../../../assets/pokeball-light.png')
   return (
     <ScrollView
@@ -53,6 +72,15 @@ export const  PokemonScreen = ({navigation,route}:Props) => {
       } }>
       { Formatter.capitalize( pokemon.name ) + '\n' }#{ pokemon.id }
     </Text>
+
+    <ButtonComponent
+        style={{
+          backgroundColor: '#710808',
+        }}
+        textColor="white"
+        text="Atras"
+        onSubmit={() => navigate.goBack()}
+      />
 
     {/*Variable para la imagen y obtener el dark o light  Imagen de la pokeball*/}
     <Image source={pokeballImg} style={styles.pokeball} />
@@ -182,5 +210,8 @@ const styles = StyleSheet.create({
   statsContainer:{
     marginHorizontal:20,//da margen entre laddos
     alignItems:'center'//alinear al centro
-  }
+  } , lottieStyle: {
+    width: 200,
+    height: 200,
+  },
 })

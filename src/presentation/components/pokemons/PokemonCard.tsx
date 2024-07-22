@@ -9,6 +9,7 @@ interface Props {
   pokemon: Pokemon;
 }
 export const PokemonCard = ({pokemon}: Props) => {
+  
   const navigate = useNavigation<NavigationProp<PropsNavigator>>();
 
   return (

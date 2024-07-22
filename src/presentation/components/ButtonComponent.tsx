@@ -6,17 +6,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 interface IButtonPresp {
   onSubmit: () => void;
-  nameIcon: string;
+  nameIcon?: string;
   sizeIcon?: number;
   text: string;
+  textColor?:string
   style?:StyleProp<ViewStyle>
+  colorIcon?:string
 }
 export const ButtonComponent = ({
   onSubmit,
   nameIcon,
   sizeIcon = 12,
   text,
-  style
+  style,
+  textColor,
+  colorIcon
 }: IButtonPresp) => {
   const {isDark, theme} = useContext(themeContext);
 
@@ -26,7 +30,8 @@ export const ButtonComponent = ({
       style={style}
       mode="contained"
       children={text}
-      icon={() => <Icon name={nameIcon} size={sizeIcon} color={isDark ? 'white' : 'black'}/>}
+      textColor={textColor}
+      icon={nameIcon ?() => <Icon name={nameIcon} size={sizeIcon} color={colorIcon}/>:undefined}
     />
   );
 };
